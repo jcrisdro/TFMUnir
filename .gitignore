@@ -2,3 +2,5 @@
 __cav1_v0.0.1__.py
 .python-version
 resources/data/fer2013/fer2013.csv
+resources/uploads/*
+*.pyc

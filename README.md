@@ -1,30 +1,23 @@
 # RUN
-python3 cav1_v0.0.2.py
-
-
-# Etapas
-
-## Obtener rostros
-
-
-## Definir emociones
-
 
 # Virtual envs
+## Packages mac
+brew install ffmpeg
+
 ## Activar virtual envs
 ```source /Users/joseph.diaz/.pyenv/versions/3.9.6/envs/.venv/bin/activate```
 
-# Dataset
-https://www.kaggle.com/datasets/msambare/fer2013?resource=download
+# Flow
+![Alt text](image.png)
 
-# Fuentes
-https://datasmarts.net/es/como-reconocer-emociones-con-tensorflow/
-https://www.researchgate.net/publication/378069515_Entrenamiento_de_Modelo_de_Deteccion_de_Emociones_Faciales
+# Entrypoints
+## api
+
+```uvicorn project.adapters.rest:app --host 0.0.0.0 --port 8000 --reload ```
+POST /v1/load
+POST /v1/training/cvv1
+POST /v1/training/cav1
 
 
-# Estructura
-|_ resources
-|__ data
-|__ inputs
-|__ outputs
-|_ services
+
+## cli
