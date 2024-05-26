@@ -1,3 +1,7 @@
 fastapi==0.111.0
 ffmpeg==1.4
 opencv-python==4.9.0.80
+openai-whisper==20231117
+nltk==3.8.1
+pandas==2.2.2
+scikit-learn==1.13.1

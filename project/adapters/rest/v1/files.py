@@ -28,14 +28,13 @@ class Files:
                     shutil.copyfileobj(file.file, fp)
                     fp.write(file.file.read())
 
-                frames, audio = self.etl_service.split(ROOT_PROJECT, str(file_path), now)
+                response = self.etl_service.split(ROOT_PROJECT, str(file_path), now)
 
                 return {
                     "file_path": file_path, 
                     "original_name": file.filename, 
                     "file_size": os.path.getsize(file_path), 
                     "content_type": file.content_type,
-                    "frames": frames
-                    }
+                    } | response
             except Exception as e:
                 return f"Exception: {e}"
