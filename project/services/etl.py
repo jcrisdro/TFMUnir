@@ -5,7 +5,7 @@ import whisper
 from moviepy.editor import VideoFileClip
 
 
-class ETL:
+class ETLService:
 
     def set_file_path(self, file_path) -> None:
         self.file_path = file_path

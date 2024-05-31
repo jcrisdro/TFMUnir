@@ -2,15 +2,15 @@ import os
 
 from fastapi import Depends, FastAPI
 
-from project.adapters.rest.v1.files import Files
-from project.adapters.rest.v1.training import Training
-from project.adapters.rest.v1.run import Run
+from project.adapters.rest.v1.files import FilesRestAdapter
+from project.adapters.rest.v1.training import TrainingRestAdapter
+from project.adapters.rest.v1.run import RunRestAdapter
 
 
 os.environ["IMAGEIO_FFMPEG_EXE"] = "/usr/bin/ffmpeg"
 
 app = FastAPI()
 
-app.include_router(Files().router)
-app.include_router(Run().router)
-app.include_router(Training().router)
+app.include_router(FilesRestAdapter().router)
+app.include_router(RunRestAdapter().router)
+app.include_router(TrainingRestAdapter().router)
