@@ -1,20 +1,17 @@
 import shutil
 import os
 
-from pathlib import Path
 from fastapi import APIRouter, UploadFile
 from datetime import datetime
 
-from constants import ROOT_PROJECT
-from project.services.etl import ETL
+from constants import ROOT_PROJECT, PATH_DIRECTORY
+from project.services.etl import ETLService
 
-PATH_DIRECTORY = Path("resources/uploads/")
-
-class Files:
+class FilesRestAdapter:
 
     def __init__(self) -> None:
         self.router = APIRouter()
-        self.etl_service = ETL()
+        self.etl_service = ETLService()
         self.routes()
     
     def routes(self):
