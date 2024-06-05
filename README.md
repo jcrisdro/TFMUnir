@@ -1,7 +1,7 @@
 # 1. Modelo
 
 ## Flow
-![Alt text](image.png)
+![Alt text](resources/readme/flow.png)
 
 
 # 2. Configuracion
@@ -93,10 +93,8 @@ Si tiene problemas con los paquetes puede validar usando la opcion de `pipx`
 # 3. Lanzar proyecto
 Para lanzar el proyecto se cuenta con las opciones de `api` y de `cli`
 
-## API
+## 1. Levante el servicio API
 Con api tendras la posiblidad de cargar un video a traves los siguientes pasos:
-
-### 1. Levante el servicio
 Levante el ambiente a traves de servicios api rest de fastapi con el comando
 > ```
 > uvicorn project.adapters.rest:app --host 0.0.0.0 --port 8000 --reload
@@ -104,10 +102,35 @@ Levante el ambiente a traves de servicios api rest de fastapi con el comando
 
 Y ejecute todo el contenido desde [http://localhost:8000/docs](http://localhost:8000/docs) 
 
-- `POST /v1/load`
-- `POST /v1/training/cvv1`
-- `POST /v1/training/cav1`
+**Correr modelo apoyo personas con idioma de señas**
+- `POST /v1/run/models/hamodel`
+- `GET /v1/run/models/hamodel`
+
+**Correr modelo apoyo personas con discapacidad visual**
+- `POST /v1/run/models/vsmodel`
+- `GET /v1/run/models/vsmodel`
+
+## 2. Comparativa api vs cli
+
+**Validar modelo hamodel desde una oracion**
+> ```
+> curl -X 'POST' \
+> 'http://127.0.0.1:8000/v1/run/models/hamodel?sentences=sentences' \
+> -H 'accept: application/json' \
+> -H 'Content-Type: multipart/form-data' \
+> -F 'file='
+> 
+> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --sentences 'sentences'
+> ```
 
 
-## CLI
-
+**Validar modelo hamodel desde un video**
+> ```
+> curl -X 'POST' \
+>  'http://127.0.0.1:8000/v1/run/models/hamodel?sentences=sentences' \
+>  -H 'accept: application/json' \
+>  -H 'Content-Type: multipart/form-data' \
+>  -F 'file=@video.mp4;type=video/mp4'
+> 
+> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --sentences 'sentences' --path 'video.mp4'
+> ```
