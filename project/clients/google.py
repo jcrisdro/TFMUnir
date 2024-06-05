@@ -1,3 +1,4 @@
+"""
 from gtts import gTTS
 import IPython
 import soundfile as sf
@@ -69,3 +70,4 @@ class Speaker:
         aiplatform.init(project=self.PROJECT_ID, location=self.LOCATION)
         print("Loged succesfully in Google")
         
+"""
