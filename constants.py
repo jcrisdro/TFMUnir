@@ -4,6 +4,7 @@ from pathlib import Path
 
 ROOT_PROJECT = os.getcwd()
 PATH_DIRECTORY = Path('uploads/')
+HOW2SIGN_DIRECTORY = Path('resources/how2sign/videos')
 HA_MODEL = {
     'type': 'semantic', # semantic | fuzzy
     'tesauro': 'conceptnet', # wordnet | conceptnet
@@ -187,4 +188,11 @@ LABELTOCLASSES = {
     77: 'teddy bear',
     78: 'hair drier',
     79: 'toothbrush'
+}
+IO_AUDIO = {
+    'sample_rate': 44100,
+    'channels': 1,
+    'duration': 5,
+    'frames_per_buffer': 1024,
+    'rate': 16000,
 }

@@ -14,7 +14,8 @@ class RunModelsCliAdapter:
 
     def hamodel(self, sentences: str = None, path: str = None):
         """ hearing aid model """
-        if isfile(path):
+        print(path)
+        if path and isfile(path):
             output = self.hamodel_service.load(path=path)
             print([self.hamodel_service.predict(sentence=sentences, distance='cosine') 
                    for sentences in output.get('transcription', [])])
