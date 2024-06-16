@@ -23,6 +23,7 @@ brew install pyenv
 brew install pyenv-virtualenv
 brew install ffmpeg
 brew install hdf5
+brew install portaudio 
 ```
 
 Adicione estas lineas de codigo en los archivos `~/.bash_profile` y `~/.bashrc`
@@ -112,25 +113,57 @@ Y ejecute todo el contenido desde [http://localhost:8000/docs](http://localhost:
 
 ## 2. Comparativa api vs cli
 
-**Validar modelo hamodel desde una oracion**
+### Modelo HAModel
+
+**CLI**
+
+Validar modelo hamodel desde una oracion
+> ```
+> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --sentences 'sentences'
+> ```
+
+Validar modelo hamodel desde un video
+> ```
+> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --sentences 'sentences' --path 'video.mp4'
+> ```
+
+Validar modelo hamodel desde una entrada de audio
+> ```
+> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --audio True
+> ```
+
+Testear modelo hamodel con datos prueba
+> ```
+> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --test_audio True
+> ```
+
+
+**REST**
+
+Validar modelo hamodel desde una oracion
 > ```
 > curl -X 'POST' \
 > 'http://127.0.0.1:8000/v1/run/models/hamodel?sentences=sentences' \
 > -H 'accept: application/json' \
 > -H 'Content-Type: multipart/form-data' \
 > -F 'file='
-> 
-> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --sentences 'sentences'
 > ```
 
 
-**Validar modelo hamodel desde un video**
+Validar modelo hamodel desde un video
 > ```
 > curl -X 'POST' \
 >  'http://127.0.0.1:8000/v1/run/models/hamodel?sentences=sentences' \
 >  -H 'accept: application/json' \
 >  -H 'Content-Type: multipart/form-data' \
 >  -F 'file=@video.mp4;type=video/mp4'
-> 
-> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --sentences 'sentences' --path 'video.mp4'
 > ```
+
+
+### Modelo VSModel
+
+
+
+# TODOs
+
+* Validar lectura de audio sobre rasberry

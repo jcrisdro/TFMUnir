@@ -9,14 +9,30 @@ class ExplodeService:
     """ service to explode video """
 
     def __init__(self) -> None:
-        print("ExplodeService started")
+        # print("ExplodeService started")
+        pass
 
     def __del__(self) -> None:
-        print("ExplodeService stopped")
+        # print("ExplodeService stopped")
+        pass
 
     def set_file_path(self, file_path) -> None:
         """ set file path """
         self.file_path = file_path
+
+    def get_text(self, file_audio_path: str = None, file_text_path: str = None, languages: str = 'es') -> str:
+        """ get text """
+        text = {}
+        try:
+            whisper_model = whisper.load_model("base")
+            text = whisper_model.transcribe(file_audio_path)
+            with open(file_text_path, "w") as file:
+                file.write(text.get('text', 'No transcription found'))
+            return text
+        except Exception as e:
+            print(f"Exception: {e}")
+        finally:
+            print("Finish transcrypting video...")
 
     def split(self, root_path: str = None, file_path: str = None, folder_name: str = None):
         """ split video """
@@ -36,7 +52,7 @@ class ExplodeService:
         finally:
             movie.close()
             audio.close()
-            print(f"Finish audio from video... {audio_path}")
+            # print(f"Finish audio from video... {audio_path}")
 
         try:
             capture = cv2.VideoCapture(f"{root_path}/{file_path}")
@@ -53,16 +69,9 @@ class ExplodeService:
         finally:
             print("Finish getting frames...")
 
-        text = {}
-        try:
-            whisper_model = whisper.load_model("base")
-            text = whisper_model.transcribe(f"{root_path}/uploads/{folder_name}/{folder_name}.mp3")
-            with open(f"{root_path}/uploads/{folder_name}/{folder_name}.txt", "w") as file:
-                file.write(text.get('text', 'No transcription found'))
-        except Exception as e:
-            print(f"Exception: {e}")
-        finally:
-            print("Finish transcrypting video...")
+        text = self.get_text(
+            f"{root_path}/uploads/{folder_name}/{folder_name}.mp3", 
+            f"{root_path}/uploads/{folder_name}/{folder_name}.txt")
 
         response = {'frames': frames, 'key': folder_name, 'language': text.get('language', 'No language found'), 
                     'transcription': text.get('text', 'No transcription found').split(',')}
