@@ -11,8 +11,7 @@ class TrainModelsRestAdapter:
         self.router = APIRouter()
         self.routes()
         self.hamodel_service = HAModelService(
-            type_model=HA_MODEL['type'], corpus=HA_MODEL['corpus'], transformer=HA_MODEL['transformer'],
-            distance=HA_MODEL['distance'])
+            type_model=HA_MODEL['type'], corpus=HA_MODEL['corpus'], transformer=HA_MODEL['transformer'])
 
     def routes(self):
         """ routes """

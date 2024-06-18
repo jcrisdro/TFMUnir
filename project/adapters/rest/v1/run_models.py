@@ -1,4 +1,4 @@
-from typing import Annotated, Optional
+from typing import Optional
 from pydantic import BaseModel
 from fastapi import APIRouter, UploadFile, File, Depends
 
@@ -18,19 +18,17 @@ class RunModelsRestAdapter:
         self.router = APIRouter()
         self.routes()
         self.hamodel_service = HAModelService(
-            type_model=HA_MODEL['type'], corpus=HA_MODEL['corpus'], transformer=HA_MODEL['transformer'],
-            distance=HA_MODEL['distance'])
+            type_model=HA_MODEL['type'], corpus=HA_MODEL['corpus'], transformer=HA_MODEL['transformer'])
 
     def routes(self):
         """ routes """
-
         @self.router.post("/hamodel")
         async def hamodel(base: HAModel = Depends(), file: UploadFile = File(None)):
             """ hearing aid model """
             if file:
                 try:
                     output = self.hamodel_service.load(file=file)
-                    return [self.hamodel_service.predict(sentence=sentences) 
+                    return [self.hamodel_service.predict(sentence=sentences, distance=HA_MODEL['distance'])
                             for sentences in output.get('transcription', [])]
                 except Exception as e:
                     return f"Exception: {e}"

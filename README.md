@@ -12,6 +12,33 @@
 
 ### Linux
 
+```
+sudo apt-get update && apt-get upgrade
+sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev
+```
+Y se actualizan los archivos
+```
+curl https://pyenv.run | bash
+sudo apt-get install liblzma-dev
+sudo apt-get install ffmpeg
+sudo apt-get instal libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
+sudo apt-get build-dep hdf5
+sudo apt-get pipx
+```
+
+Adicione estas lineas de codigo en los archivos `~/.profile` y `~/.bash_profile`
+
+```
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+```
+
+```
+eval "$(pyenv virtualenv-init -)"
+```
+
+
 ### Mac OS
 
 Instale los paquetes y lance la funcion de exportar
@@ -131,6 +158,20 @@ Validar modelo hamodel desde una entrada de audio
 > ```
 > PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --audio True
 > ```
+Ejemplos de frases y respuestas
+* _fqEO3MuTlEE_15-5-rgb_front	87.94	88.72	Oh!_
+* _fqEO3MuTlEE_16-5-rgb_front	88.73	91.52	That's a little bit more than a little bit._
+* _fqEO3MuTlEE_17-5-rgb_front	92.4	95.79	Give it a straw and bottoms up!_
+* _fqEO3MuTlEE_2-5-rgb_front	13.47	20.84	Find that real quick, here we go._
+* _fqEO3MuTlEE_3-5-rgb_front	21.76	24.89	And, also, one shot of dark rum._
+* _fqEO3MuTlEE_4-5-rgb_front	25.54	26.84	Here we go._
+* _fqEO3MuTlEE_5-5-rgb_front	27.43	30.18	And, some lime juice._
+* _fqEO3MuTlEE_6-5-rgb_front	36.64	41.76	About a teaspoon of lime juice._
+* _fqEO3MuTlEE_7-5-rgb_front	42.03	48.12	Next we're going to add pineapple juice and orange juice._
+* _fqEO3MuTlEE_8-5-rgb_front	48.81	52.62	There's orange juice and pineapple juice._
+* _fqEO3MuTlEE_9-5-rgb_front	52.7	54.31	Equal parts of both._
+* _fsfTrRxuJ-c_0-5-rgb_front	0.84	1.26	Hi!_
+
 
 Testear modelo hamodel con datos prueba
 > ```
@@ -167,3 +208,6 @@ Validar modelo hamodel desde un video
 # TODOs
 
 * Validar lectura de audio sobre rasberry
+* Publicar api en AWS y consumir recursos de S3
+* Entregar dominio a profe
+* Ajustar respuestas de api para que devuelva las rutas de los video con boto3 S3
