@@ -203,6 +203,12 @@ Validar modelo hamodel desde un video
 
 ### Modelo VSModel
 
+**CLI**
+
+Validar modelo vsmodel desde la camara
+> ```
+> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model vsmodel --cam True
+> ```
 
 
 # TODOs
