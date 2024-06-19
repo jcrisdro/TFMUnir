@@ -9,18 +9,16 @@ class ExplodeService:
     """ service to explode video """
 
     def __init__(self) -> None:
-        # print("ExplodeService started")
-        pass
+        self.file_path = None
 
     def __del__(self) -> None:
-        # print("ExplodeService stopped")
-        pass
+        print("ExplodeService stopped")
 
-    def set_file_path(self, file_path) -> None:
+    def set_file_path(self, file_path: str = None) -> None:
         """ set file path """
         self.file_path = file_path
 
-    def get_text(self, file_audio_path: str = None, file_text_path: str = None, languages: str = 'es') -> str:
+    def get_text(self, file_audio_path: str = None, file_text_path: str = None) -> str:
         """ get text """
         text = {}
         try:
@@ -45,14 +43,12 @@ class ExplodeService:
         try:
             movie = VideoFileClip(f"{root_path}/{file_path}")
             audio = movie.audio
-            audio_path = f"/uploads/{folder_name}/{folder_name}.mp3"
-            audio.write_audiofile(f"{root_path}/{audio_path}")
+            audio.write_audiofile(f"{root_path}/uploads/{folder_name}/{folder_name}.mp3")
         except Exception as e:
             print(f"Exception: {e}")
         finally:
             movie.close()
             audio.close()
-            # print(f"Finish audio from video... {audio_path}")
 
         try:
             capture = cv2.VideoCapture(f"{root_path}/{file_path}")
@@ -73,6 +69,6 @@ class ExplodeService:
             f"{root_path}/uploads/{folder_name}/{folder_name}.mp3", 
             f"{root_path}/uploads/{folder_name}/{folder_name}.txt")
 
-        response = {'frames': frames, 'key': folder_name, 'language': text.get('language', 'No language found'), 
+        response = {'frames': frames, 'key': folder_name, 'language': text.get('language', 'No language found'),
                     'transcription': text.get('text', 'No transcription found').split(',')}
         return response

@@ -9,7 +9,7 @@ from colorama import init, Fore, Back, Style
 from project.adapters.cli.v1.run_models import RunModelsCliAdapter
 from project.services.inputs import InputService
 from project.services.outputs import OutputService
-from constants import ROOT_PROJECT
+from constants import ROOT_PROJECT, LABELTOCLASSES
 
 def setup_args():
     """
@@ -41,9 +41,18 @@ def handle_args(args: dict = None):
     os.mkdir(f"{ROOT_PROJECT}/uploads/{folder_name}")
     cycle = 0
     if args.model == 'vsmodel':
+        input_service = InputService()
+        output_service = OutputService()
         run_models_cli_adapter = RunModelsCliAdapter()
         run_models_cli_adapter.vsmodel()
-    else:
+        if args.cam:
+            capture = cv2.VideoCapture(0)
+            while capture.isOpened():
+                status, frame = capture.read()
+                if not status or (cv2.waitKey(10) & 0xFF == ord('q')):
+                    break
+                _ = input_service.capture_video(frame=frame)
+    elif args.model == 'hamodel':
         input_service = InputService()
         output_service = OutputService()
         if args.audio:
@@ -52,22 +61,31 @@ def handle_args(args: dict = None):
             my_listener = kb.Listener(pull, push)
             my_listener.start()
             while my_listener.is_alive():
-                segment.append(input_service.capture_audio(languages=args.languages, cycle=cycle, 
-                                                           folder_name=folder_name))
+                segment.append(input_service.capture_audio(cycle=cycle, folder_name=folder_name))
                 output_service.show_video(list_videos=segment, folder_name=folder_name)
                 cycle = cycle + 1
             print(Back.RED + Fore.WHITE + "destroyed all windows")
             cv2.destroyAllWindows()
-        elif args.cam:
-            pass
         elif args.test_audio:
-            test_video = [{'VIDEO_NAME': '-0N0jbyBW6g-5-rgb_front', 'SENTENCE_NAME': '-0N0jbyBW6g_0-5-rgb_front',
-                          'SENTENCE': 'Hello.', 'EMBEDDINGS_DISTANCES': 0.3518511652946472, 'START_REALIGNED': 1.79,
-                          'END_REALIGNED': 2.27, 'VIDEO_ID': '-0N0jbyBW6g', 'INPUT_TEXT': ' Hello, that is good.'}, 
-                          {'VIDEO_NAME': 'FadLsYNd2tk-5-rgb_front', 'SENTENCE_NAME': '_0-JkwZ9o4Q_5-5-rgb_front', 
-                           'SENTENCE': "Good, that's very good.", 'EMBEDDINGS_DISTANCES': 0.36733341217041016, 
-                           'START_REALIGNED': 68.5, 'END_REALIGNED': 70.55, 'VIDEO_ID': 'FadLsYNd2tk', 
-                           'INPUT_TEXT': ' Hello, that is good. Hello, that is good.'}]
+            test_video = [
+                {'VIDEO_NAME': '-0N0jbyBW6g-5-rgb_front',
+                 'SENTENCE_NAME': '-0N0jbyBW6g_0-5-rgb_front',
+                 'SENTENCE': 'Hello.', 
+                 'EMBEDDINGS_DISTANCES': 0.3518511652946472, 
+                 'START_REALIGNED': 1.79,
+                 'END_REALIGNED': 2.27, 
+                 'VIDEO_ID': '-0N0jbyBW6g', 
+                 'INPUT_TEXT': ' Hello, that is good.'
+                },
+                {'VIDEO_NAME': 'FadLsYNd2tk-5-rgb_front',
+                 'SENTENCE_NAME': '_0-JkwZ9o4Q_5-5-rgb_front',
+                 'SENTENCE': "Good, that's very good.",
+                 'EMBEDDINGS_DISTANCES': 0.36733341217041016,
+                 'START_REALIGNED': 68.5,
+                 'END_REALIGNED': 70.55,
+                 'VIDEO_ID': 'FadLsYNd2tk',
+                 'INPUT_TEXT': ' Hello, that is good. Hello, that is good.'
+                 }]
             output_service.show_video(list_videos=test_video, folder_name='test')
         else:
             if args.path:
@@ -78,7 +96,8 @@ def handle_args(args: dict = None):
                 run_models_cli_adapter.hamodel(sentences = args.sentences)
             else:
                 print("Please select a valida option")
-
+    else:
+        print("Please select a valid model")
 
 if __name__ == "__main__":
     """ main function """

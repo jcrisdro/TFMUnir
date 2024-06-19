@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from fastapi import APIRouter, UploadFile, File, Depends
 
 from project.services.hamodel import HAModelService
+from project.services.vsmodel import VSModelService
 from constants import HA_MODEL
 
 
@@ -19,6 +20,7 @@ class RunModelsRestAdapter:
         self.routes()
         self.hamodel_service = HAModelService(
             type_model=HA_MODEL['type'], corpus=HA_MODEL['corpus'], transformer=HA_MODEL['transformer'])
+        self.vsmodel_service = VSModelService()
 
     def routes(self):
         """ routes """
@@ -35,6 +37,14 @@ class RunModelsRestAdapter:
             return self.hamodel_service.predict(sentence=base.sentences)
 
         @self.router.post("/vsmodel")
-        async def vsmodel():
+        async def vsmodel(file: UploadFile = File(None)):
             """ visual support model """
-            print("vsmodel")
+            if file:
+                try:
+                    output = self.vsmodel_service.load(file=file)
+                    df, frame = self.vsmodel_service.predict(
+                        frame=self.vsmodel_service.picture_to_frame(file_dict=output))
+                    return self.vsmodel_service.process(df=df, frame=frame)
+                except Exception as e:
+                    return f"Exception: {e}"
+            return None
