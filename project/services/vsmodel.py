@@ -38,14 +38,16 @@ class VSModelService:
         """ process """
         objects = []
         for index in range(0, df.shape[0]):
-            objects.append({'name': LABELTOCLASSES[df.iloc[index]['class']], 'distance': 0, 'color': COlORS[index]})
+            objects.append({'name': LABELTOCLASSES[df.iloc[index]['class']], 
+                            'distance': 0, 
+                            'color': COlORS[index].get('name')})
             bbox = df.iloc[index][["xmin", "ymin", "xmax", "ymax"]].values.astype(int)
             bbox = [bbox[0] + 10, bbox[1] - 10, bbox[2] - 10, bbox[3] - 10]
-            cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,255,0), 2)
+            cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), COlORS[index].get('rgb'), 2)
             cv2.putText(
                 img = frame, text = f"{df.iloc[index]['name']}: {round(df.iloc[index]['confidence'], 4)}",
                 org=(bbox[0], bbox[1]-15), fontFace=cv2.FONT_HERSHEY_PLAIN, fontScale=2,
-                color=COlORS[index], thickness=2)
+                color=COlORS[index].get('rgb'), thickness=2)
             cv2.imshow("frame", frame)
         return {
             'objects': objects,
