@@ -6,6 +6,7 @@ from project.adapters.rest.v1 import router as v1
 origins = [
     "http://localhost",
     "http://localhost:8000",
+    "http://3.135.25.96:8000/",
 ]
 
 app = FastAPI()
