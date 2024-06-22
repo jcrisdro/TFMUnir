@@ -210,10 +210,15 @@ Validar modelo vsmodel desde la camara
 > PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model vsmodel --cam True
 > ```
 
+# 3. Docker
+
+> ```
+> docker-compose -f dockercompose.yml up --build
+> ```
 
 # TODOs
 
-* Validar lectura de audio sobre rasberry
-* Publicar api en AWS y consumir recursos de S3
-* Entregar dominio a profe
-* Ajustar respuestas de api para que devuelva las rutas de los video con boto3 S3
+* 😭 Validar lectura de audio sobre rasberry
+* 😭 Publicar api en AWS y consumir recursos de S3
+* 😭 Entregar dominio a profe y con certificados
+* 😍 Ajustar respuestas de api para que devuelva las rutas de los video con boto3 S3

@@ -2,7 +2,8 @@
 uploads/*
 !uploads/.uploads.txt
 .python-version
-resources/how2sign/videos/*.mp4
+uploads/how2sign/videos/*.mp4
+constants.py
 
 # general
 *.DS_Store
