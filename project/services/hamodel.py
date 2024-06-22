@@ -14,6 +14,7 @@ from nltk.corpus import stopwords, brown, reuters, gutenberg
 from sklearn.metrics.pairwise import cosine_distances, euclidean_distances
 
 from project.services.explode import ExplodeService
+from project.clients.aws import AWSClient
 from constants import ROOT_PROJECT, PATH_DIRECTORY, HOW2SIGN_DIRECTORY
 
 
@@ -27,6 +28,7 @@ class HAModelService:
         self.corpus = corpus
         self.transformer = transformer
         self.explode_service = ExplodeService()
+        self.aws_cliente = AWSClient()
 
     def __del__(self) -> None:
         print("HAModelService stopped")
@@ -45,11 +47,16 @@ class HAModelService:
     def get_encode_video(self, video_name: str = None) -> str:
         """ get encode video """
         try:
-            with open(f'{ROOT_PROJECT}/{HOW2SIGN_DIRECTORY}/{video_name}.mp4', 'rb') as video:
+            file_directory = self.aws_cliente.get_video(file_object=f"{video_name}.mp4")
+            with open(file_directory, 'rb') as video:
                 output = base64.b64encode(video.read()).decode('utf-8')
+            
+            if os.path.exists(file_directory):
+                os.remove(file_directory)
         except Exception as e:
             print(f"Exception: {e}")
-            with open(f'{ROOT_PROJECT}/{HOW2SIGN_DIRECTORY}/_-adcxjm1R4_0-8-rgb_front.mp4', 'rb') as video:
+            file_directory = self.aws_cliente.get_video(file_object="_-adcxjm1R4_0-8-rgb_front.mp4")
+            with open(file_directory, 'rb') as video:
                 output = base64.b64encode(video.read()).decode('utf-8')
         return output
 

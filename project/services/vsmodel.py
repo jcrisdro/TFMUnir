@@ -1,21 +1,21 @@
 import torch
 import os
 import cv2
-import pandas as pd
 import base64
 import shutil
 import mimetypes
 
 from datetime import datetime
 
-from constants import CLASSESTOLABEL, LABELTOCLASSES, PATH_DIRECTORY, ROOT_PROJECT, COlORS
+from constants import LABELTOCLASSES, PATH_DIRECTORY, ROOT_PROJECT, COlORS
 
 class VSModelService:
     """ training model adapter """
 
     def __init__(self) -> None:
         self.yolo_client = None
-        # TODO: mover ubicacion de modelo a resources/models/yolov5n.model
+        self.focal_length = 615
+        self.known_width = 14.0
         self.video_model = torch.hub.load("ultralytics/yolov5", model="yolov5n", pretrained=True)
 
     def __del__(self) -> None:
@@ -33,15 +33,20 @@ class VSModelService:
         df = df[df["confidence"] > 0.5]
         return df, frame
 
+    def distance(self, object_width, perceived_width):
+        """ distance """
+        return (object_width * self.focal_length) / perceived_width
+
+
     # TODO: optimizar codigo e integrar predict y process
     def process(self, df: object = None, frame: object = None):
         """ process """
         objects = []
         for index in range(0, df.shape[0]):
-            objects.append({'name': LABELTOCLASSES[df.iloc[index]['class']], 
-                            'distance': 0, 
-                            'color': COlORS[index].get('name')})
             bbox = df.iloc[index][["xmin", "ymin", "xmax", "ymax"]].values.astype(int)
+            objects.append({'name': LABELTOCLASSES[df.iloc[index]['class']], 
+                            'distance': self.distance(self.known_width, bbox[2] - bbox[0]),
+                            'color': COlORS[index].get('name')})
             bbox = [bbox[0] + 10, bbox[1] - 10, bbox[2] - 10, bbox[3] - 10]
             cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), COlORS[index].get('rgb'), 2)
             cv2.putText(
@@ -78,4 +83,3 @@ class VSModelService:
             return attr_file | response
         except Exception as e:
             return f"Exception: {e}"
-

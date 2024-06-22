@@ -1,6 +1,8 @@
 [api]
 fastapi==0.111.0
 tables==3.9.2
+boto3==1.34.118
+mangum==0.17.0
 
 [multimedia]
 ffmpeg==1.4
