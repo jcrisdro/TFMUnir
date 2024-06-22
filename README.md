@@ -210,15 +210,27 @@ Validar modelo vsmodel desde la camara
 > PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model vsmodel --cam True
 > ```
 
-# 3. Docker
+# 3. Despliegues
+
+> ```
+> ngrok http http://localhost:8000
+> ```
+
+
+## Docker
 
 > ```
 > docker-compose -f dockercompose.yml up --build
 > ```
 
-# TODOs
+## Lambdas AWS
 
-* 😭 Validar lectura de audio sobre rasberry
-* 😭 Publicar api en AWS y consumir recursos de S3
-* 😭 Entregar dominio a profe y con certificados
-* 😍 Ajustar respuestas de api para que devuelva las rutas de los video con boto3 S3
+https://www.youtube.com/watch?v=FUsJmLO2G4g
+https://medium.com/@kevinzeladacl/deploy-a-fastapi-app-with-nginx-and-gunicorn-b66ac14cdf5a
+
+> ```
+> pip3 install -t lib -r requirements.txt
+> zip aws_lambda_artifact.zip -r lib/*
+> zip -r aws_lambda_artifact.zip project
+> zip -r aws_lambda_artifact.zip resources
+> ```

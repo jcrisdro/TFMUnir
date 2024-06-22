@@ -66,7 +66,7 @@ class ExplodeService:
             print("Finish getting frames...")
 
         text = self.get_text(
-            f"{root_path}/uploads/{folder_name}/{folder_name}.mp3", 
+            f"{root_path}/uploads/{folder_name}/{folder_name}.mp3",
             f"{root_path}/uploads/{folder_name}/{folder_name}.txt")
 
         response = {'frames': frames, 'key': folder_name, 'language': text.get('language', 'No language found'),

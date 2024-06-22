@@ -1,5 +1,4 @@
 import sounddevice as sd
-import speech_recognition as sr
 
 from scipy.io.wavfile import write
 
@@ -10,6 +9,7 @@ from constants import IO_AUDIO, ROOT_PROJECT, HA_MODEL
 
 
 class InputService:
+    """ input service """
 
     def __init__(self) -> None:
         self.explode = ExplodeService()
