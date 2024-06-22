@@ -9,6 +9,7 @@ from datetime import datetime
 
 from constants import LABELTOCLASSES, PATH_DIRECTORY, ROOT_PROJECT, COlORS
 
+
 class VSModelService:
     """ training model adapter """
 
@@ -37,20 +38,17 @@ class VSModelService:
         """ distance """
         return (object_width * self.focal_length) / perceived_width
 
-
-    # TODO: optimizar codigo e integrar predict y process
     def process(self, df: object = None, frame: object = None):
         """ process """
         objects = []
         for index in range(0, df.shape[0]):
             bbox = df.iloc[index][["xmin", "ymin", "xmax", "ymax"]].values.astype(int)
-            objects.append({'name': LABELTOCLASSES[df.iloc[index]['class']], 
-                            'distance': self.distance(self.known_width, bbox[2] - bbox[0]),
-                            'color': COlORS[index].get('name')})
+            objects.append({'name': LABELTOCLASSES[df.iloc[index]['class']], 'color': COlORS[index].get('name'),
+                            'distance': self.distance(self.known_width, bbox[2] - bbox[0]), })
             bbox = [bbox[0] + 10, bbox[1] - 10, bbox[2] - 10, bbox[3] - 10]
             cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), COlORS[index].get('rgb'), 2)
             cv2.putText(
-                img = frame, text = f"{df.iloc[index]['name']}: {round(df.iloc[index]['confidence'], 4)}",
+                img=frame, text=f"{df.iloc[index]['name']}: {round(df.iloc[index]['confidence'], 4)}",
                 org=(bbox[0], bbox[1]-15), fontFace=cv2.FONT_HERSHEY_PLAIN, fontScale=2,
                 color=COlORS[index].get('rgb'), thickness=2)
             cv2.imshow("frame", frame)
@@ -58,7 +56,7 @@ class VSModelService:
             'objects': objects,
             'picture': base64.b64encode(cv2.imencode('.jpg', frame)[1]).decode('utf-8')
         }
-    
+
     def load(self, file: object = None, path: str = None):
         """ load """
         now = datetime.strftime(datetime.now(), "%Y%m%d%H%M%S")
@@ -74,7 +72,7 @@ class VSModelService:
                 shutil.copy2(path, file_path)
 
             attr_file = {
-                'path': f"{ROOT_PROJECT}/uploads/{now}/{now}.{file.filename.split('.')[-1]}", 
+                'path': f"{ROOT_PROJECT}/uploads/{now}/{now}.{file.filename.split('.')[-1]}",
                 'file_size': os.path.getsize(file_path),
                 'content_type': mimetypes.guess_type(file_path)
                 }

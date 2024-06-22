@@ -3,7 +3,6 @@ import shutil
 import os
 import mimetypes
 import gensim
-import nltk
 import pandas as pd
 
 from pathlib import Path
@@ -15,7 +14,7 @@ from sklearn.metrics.pairwise import cosine_distances, euclidean_distances
 
 from project.services.explode import ExplodeService
 from project.clients.aws import AWSClient
-from constants import ROOT_PROJECT, PATH_DIRECTORY, HOW2SIGN_DIRECTORY
+from constants import ROOT_PROJECT, PATH_DIRECTORY
 
 
 class HAModelService:
@@ -46,18 +45,26 @@ class HAModelService:
 
     def get_encode_video(self, video_name: str = None) -> str:
         """ get encode video """
-        try:
+        def __get_video__(video_name):
             file_directory = self.aws_cliente.get_video(file_object=f"{video_name}.mp4")
-            with open(file_directory, 'rb') as video:
-                output = base64.b64encode(video.read()).decode('utf-8')
-            
+            if file_directory:
+                with open(file_directory, 'rb') as video:
+                    output = base64.b64encode(video.read()).decode('utf-8')
+                return output
+            return None
+
+        output = __get_video__(video_name=video_name)
+        if output is None:
+            video_name = "_-adcxjm1R4_0-8-rgb_front"
+            output = __get_video__(video_name=video_name)
+
+        try:
+            file_directory = f"{ROOT_PROJECT}/{video_name}.mp4"
             if os.path.exists(file_directory):
                 os.remove(file_directory)
+                print(f"File {file_directory} removed")
         except Exception as e:
-            print(f"Exception: {e}")
-            file_directory = self.aws_cliente.get_video(file_object="_-adcxjm1R4_0-8-rgb_front.mp4")
-            with open(file_directory, 'rb') as video:
-                output = base64.b64encode(video.read()).decode('utf-8')
+            print(f"File {file_directory} can't removed {e}")
         return output
 
     def build_model(

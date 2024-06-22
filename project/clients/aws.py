@@ -1,11 +1,10 @@
-import os
 import boto3
-import base64
-
 
 from constants import AWS, ROOT_PROJECT
 
+
 class AWSClient:
+    """ AWS client """
 
     def __init__(self) -> None:
         self.boto_client = None
@@ -24,8 +23,8 @@ class AWSClient:
         """ Get video from S3 bucket """
         try:
             s3 = self.client('s3')
-            s3.download_file(Bucket=AWS['AWS_BUCKET'], Key=file_object, Filename=file_object)
+            s3.download_file(Bucket=AWS['AWS_BUCKET'], Key=f"how2sign/{file_object}", Filename=file_object)
             return f'{ROOT_PROJECT}/{file_object}'
         except Exception as e:
-            print(f"Exception: {e}")
+            print(f"Filenotfound Key=how2sign/{file_object}, Filename={file_object} :: {e}")
             return None
