@@ -1,8 +1,9 @@
 import base64
+import hashlib
 import shutil
 import os
 import mimetypes
-import gensim
+import time
 import pandas as pd
 
 from pathlib import Path
@@ -21,16 +22,44 @@ class HAModelService:
     """ training model adapter """
 
     def __init__(
-            self, type_model: str = None, corpus: str = 'brown', transformer: str = 'paraphrase-MiniLM-L6-v2') -> None:
+            self, type_model: str = None, corpus: str = 'brown', transformer: str = 'paraphrase-MiniLM-L6-v2',
+            resource_video: str = 'aws') -> None:
         self.type_model = type_model
         self.model = None
         self.corpus = corpus
         self.transformer = transformer
         self.explode_service = ExplodeService()
         self.aws_cliente = AWSClient()
+        self.df_embeddings = None
+        self.__start_time = time.time()
+        self.__metrics = {}
+        self.resource_video = resource_video
+        print(f"HAModelService started [{type_model} {corpus} {transformer} {resource_video}]")
 
     def __del__(self) -> None:
         print("HAModelService stopped")
+
+    def __set_time__(self, start_time: float = 0.0):
+        """ set time """
+        self.__start_time = start_time
+
+    def __get_time__(self, method: str = None):
+        """ get time """
+        self.__metrics[f'{method}_time'] = time.time() - self.__start_time
+
+    def __get_metrics__(self):
+        """ get metrics """
+        return self.__metrics
+
+    def __set_metrics__(self, metrics: dict = None):
+        """ set metrics """
+        self.__metrics = metrics
+
+    def get_df_embeddings(self) -> None:
+        """ get df embeddings """
+        if self.df_embeddings is None:
+            self.df_embeddings = pd.read_hdf(f'{ROOT_PROJECT}/resources/how2sign/how2sign_realigned.h5', 'df')
+        self.__get_time__(method='load_embeddings')
 
     def get_corpus(self, corpus: str = 'brown'):
         """ return corpus """
@@ -39,19 +68,25 @@ class HAModelService:
         elif corpus == 'gutenberg':
             return gutenberg.sents()
         elif corpus == 'stopwords':
-            return stopwords.sents()
+            return stopwords.words('english')
         else:
             return brown.sents()
 
     def get_encode_video(self, video_name: str = None) -> str:
         """ get encode video """
         def __get_video__(video_name):
-            file_directory = self.aws_cliente.get_video(file_object=f"{video_name}.mp4")
-            if file_directory:
+            self.__metrics['resource_video'] = self.resource_video
+            if self.resource_video == 'aws':
+                file_directory = self.aws_cliente.get_video(file_object=f"{video_name}.mp4")
                 with open(file_directory, 'rb') as video:
                     output = base64.b64encode(video.read()).decode('utf-8')
-                return output
-            return None
+            elif self.resource_video == 'local':
+                file_directory = f"{ROOT_PROJECT}/uploads/how2sign/videos/{video_name}.mp4"
+                with open(file_directory, 'rb') as video:
+                    output = base64.b64encode(video.read()).decode('utf-8')
+            else:
+                output = None
+            return output
 
         output = __get_video__(video_name=video_name)
         if output is None:
@@ -72,28 +107,32 @@ class HAModelService:
         """ build model """
         if self.model is None:
             sentences = self.get_corpus(corpus=self.corpus)
-            if Path(f'resources/models/model_{self.corpus}.model').exists():
-                if self.type_model == 'semantic':
+
+            if self.type_model == 'semantic':
+                if Path(f'resources/models/model_{self.corpus}.model').exists():
                     model = SentenceTransformer(f'resources/models/model_{self.corpus}.model')
                 else:
-                    model = gensim.models.Word2Vec.load(f'resources/models/model_{self.corpus}.model')
-            else:
-                if self.type_model == 'semantic':
                     model = SentenceTransformer(self.transformer)
+                    model.save(f'resources/models/model_{self.corpus}.model')
+            else:
+                if Path(f'resources/models/model_w2v_{self.corpus}.model').exists():
+                    model = Word2Vec.load(f'resources/models/model_w2v_{self.corpus}.model')
                 else:
                     model = Word2Vec(
                         sentences=sentences, vector_size=vector_size, window=window, min_count=min_count,
                         workers=workers)
-                model.save(f'resources/models/model_{self.corpus}.model')
+                    model.save(f'resources/models/model_w2v_{self.corpus}.model')
             self.model = model
         return self.model
 
     def distance(self, distance, rows, model):
         """ distance """
         if distance == 'cosine':
-            return cosine_distances(rows, [model])
+            output = cosine_distances(rows, [model])
         else:
-            return euclidean_distances
+            output = euclidean_distances(rows, [model])
+        self.__get_time__(method='distance')
+        return output
 
     def trainning(self, train: str = "test"):
         """ trainning """
@@ -112,15 +151,33 @@ class HAModelService:
 
     def predict(self, sentence: str = None, distance: str = 'cosine'):
         """ predict """
+        self.get_df_embeddings()
         model = self.build_model()
-        df_embeddings = pd.read_hdf('resources/how2sign/how2sign_realigned.h5', 'df')
-        model_embeddings = model.encode(sentence)
-        try:
-            df_embeddings['EMBEDDINGS_DISTANCES'] = self.distance(
-                distance=distance, rows=df_embeddings['EMBEDDINGS_SENTENCE'].tolist(), model=model_embeddings)
-        except Exception as e:
-            print(f"Exception: {e}")
-        row = df_embeddings.loc[df_embeddings['EMBEDDINGS_DISTANCES'].idxmin()]
+        if self.type_model == 'semantic':
+            # validate with semantic model
+            model_embeddings = model.encode(sentence)
+            try:
+                self.df_embeddings['EMBEDDINGS_DISTANCES'] = self.distance(
+                    distance=distance, rows=self.df_embeddings['EMBEDDINGS_SENTENCE'].tolist(), model=model_embeddings)
+            except Exception as e:
+                print(f"Exception: {e}")
+            row = self.df_embeddings.loc[self.df_embeddings['EMBEDDINGS_DISTANCES'].idxmin()]
+        else:
+            # TODO: mejorar la validacion de busquedas difusas
+            try:
+                model_embeddings = model.wv.most_similar('disclosed')
+                self.df_embeddings['EMBEDDINGS_DISTANCES'] = self.distance(
+                    distance=distance, rows=self.df_embeddings['EMBEDDINGS_SENTENCE'].tolist(), model=model_embeddings)
+                print(f">>> Model embeddings: {model_embeddings}")
+            except Exception as e:
+                print(f"Exception: {e}")
+
+        # set metrics
+        self.__metrics['sentence_method'] = hashlib.md5(sentence.encode('utf')).hexdigest()
+        self.__get_time__(method='predict')
+        self.__metrics['distance_method'] = distance
+        self.__metrics['distance_value'] = row['EMBEDDINGS_DISTANCES']
+
         return {
             'VIDEO_ID': row['VIDEO_ID'],
             'VIDEO_PATH': self.get_encode_video(row['SENTENCE_NAME']),

@@ -19,13 +19,7 @@ class TrainModelsRestAdapter:
         @self.router.get("/hamodel")
         async def hamodel():
             """ hearing aid model """
-            print("hamodel")
             try:
                 return self.hamodel_service.trainning(train=HA_MODEL['trainning'])
             except Exception as e:
                 return f"Exception: {e}"
-
-        @self.router.get("/vsmodel")
-        async def vsmodel():
-            """ visual support model """
-            print("vsmodel")
