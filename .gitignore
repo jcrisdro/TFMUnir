@@ -1,9 +1,9 @@
-# project
-uploads/*
-!uploads/.uploads.txt
-.python-version
-uploads/how2sign/videos/*.mp4
-constants.py
+# project backend
+backend/uploads/*
+!backend/uploads/.uploads.txt
+backend/.python-version
+backend/uploads/how2sign/videos/*.mp4
+backend/constants.py
 
 # general
 *.DS_Store
