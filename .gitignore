@@ -4,6 +4,7 @@ backend/uploads/*
 backend/.python-version
 backend/uploads/how2sign/videos/*.mp4
 backend/constants.py
+backend/resources/how2sign/how2sign_realigned.h5
 
 # general
 *.DS_Store
