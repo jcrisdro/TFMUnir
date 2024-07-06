@@ -6,6 +6,7 @@ backend/uploads/how2sign/videos/*.mp4
 backend/constants.py
 backend/resources/how2sign/how2sign_realigned.h5
 backend/resources/models/model_stopwords.model/*
+backend/resources/models/model_w2v_brown.model/*
 
 # general
 *.DS_Store
