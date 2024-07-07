@@ -42,6 +42,7 @@ class RunModelsRestAdapter:
             if file:
                 try:
                     output = self.vsmodel_service.load(file=file)
+                    print(f">>{output}<<")
                     df, frame = self.vsmodel_service.predict(
                         frame=self.vsmodel_service.picture_to_frame(file_dict=output))
                     return self.vsmodel_service.process(df=df, frame=frame)

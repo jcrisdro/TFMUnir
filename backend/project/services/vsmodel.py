@@ -64,6 +64,7 @@ class VSModelService:
             if file:
                 os.mkdir(f"{ROOT_PROJECT}/uploads/{now}")
                 file_path = PATH_DIRECTORY / f"{now}/{now}.{file.filename.split('.')[-1]}"
+                print(file_path)
                 with file_path.open("wb") as fp:
                     shutil.copyfileobj(file.file, fp)
                     fp.write(file.file.read())
