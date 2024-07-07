@@ -1,16 +1,38 @@
+
 # 1. Modelo
 
-## Flow
-![Alt text](resources/readme/flow.png)
+## 1.1. Flow
+<picture>
+  <img 
+    align="center" width="75%" height="75%"
+    alt="Flow" src="backend/resources/readme/flow.png" />
+</picture>
 
 
-# 2. Configuracion
+## 1.2. Arquitectura
+<picture>
+  <img 
+    width="45%" height="45%"
+    alt="Archicture" src="backend/resources/readme/arquitectura.png">
+</picture>
 
-## Configuración ambientes
+<picture>
+  <img 
+    width="45%" height="45%"
+    alt="Hearing Aid Model" src="backend/resources/readme/hamodel.png">
+</picture>
 
-### Windows
+<picture>
+  <img 
+    width="45%" height="45%"
+    alt="Visual Support Model" src="backend/resources/readme/vsmodel.png">
+</picture>
 
-### Linux
+# 2. Configuracion paquetes y ambientes backend
+
+## 2.1. Instalación paquetes
+
+### 2.1.1. Linux
 
 ```
 sudo apt-get update && apt-get upgrade
@@ -39,7 +61,7 @@ eval "$(pyenv virtualenv-init -)"
 ```
 
 
-### Mac OS
+### 2.1.2. Mac OS
 
 Instale los paquetes y lance la funcion de exportar
 ```
@@ -73,7 +95,7 @@ Reinicie la configuracion de perfil de bash
 > ```
 
 
-## Configurar virtual envs
+## 2.2. Configurar virtual envs
 Instale la version de python con `pyenv`
 > ```
 > pyenv install --list
@@ -94,14 +116,14 @@ Donde `.ia_venv` es el nombre del folder de nuestro entorno virtual local
 > which python
 > ```
 
-## Activar virtual envs
+## 2.3. Activar virtual envs
 Para activar el ambiente virtual hagalo ingresando al proyecto y vera en el shell `(.ia_venv)` o si no ejecute la ruta completa
 > ```
 > cd project
 > source /Users/joseph.diaz/.pyenv/versions/3.11.0/envs/.ia_venv/bin/activate
 > ```
 
-## Instalacion paquetes
+## 2.4. Instalacion paquetes proyecto
 Para instalar los paquetes necesarios ejecute
 
 > ```
@@ -118,13 +140,14 @@ Si tiene problemas con los paquetes puede validar usando la opcion de `pipx`
 > pipx install gensim
 > ```
 
-# 3. Lanzar proyecto
+## 2.5. Lanzar proyecto
 Para lanzar el proyecto se cuenta con las opciones de `api` y de `cli`
 
-## 1. Levante el servicio API
+### 2.5.1. Levante el servicio API
 Con api tendras la posiblidad de cargar un video a traves los siguientes pasos:
 Levante el ambiente a traves de servicios api rest de fastapi con el comando
 > ```
+> cd backend
 > uvicorn project.adapters.rest:app --host 0.0.0.0 --port 8000 --reload
 > ```
 
@@ -138,24 +161,25 @@ Y ejecute todo el contenido desde [http://localhost:8000/docs](http://localhost:
 - `POST /v1/run/models/vsmodel`
 - `GET /v1/run/models/vsmodel`
 
-## 2. Comparativa api vs cli
-
-### Modelo HAModel
+### 2.5.2. Modelo HAModel
 
 **CLI**
 
 Validar modelo hamodel desde una oracion
 > ```
+> cd backend
 > PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --sentences 'sentences'
 > ```
 
 Validar modelo hamodel desde un video
 > ```
+> cd backend
 > PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --sentences 'sentences' --path 'video.mp4'
 > ```
 
 Validar modelo hamodel desde una entrada de audio
 > ```
+> cd backend
 > PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --audio True
 > ```
 Ejemplos de frases y respuestas
@@ -175,6 +199,7 @@ Ejemplos de frases y respuestas
 
 Testear modelo hamodel con datos prueba
 > ```
+> cd backend
 > PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --test_audio True
 > ```
 
@@ -201,36 +226,28 @@ Validar modelo hamodel desde un video
 > ```
 
 
-### Modelo VSModel
+### 2.5.3. Modelo VSModel
 
 **CLI**
 
 Validar modelo vsmodel desde la camara
 > ```
+> cd backend
 > PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model vsmodel --cam True
 > ```
 
-# 3. Despliegues
-
+## 2.6. Despliegues
+El despliegue de los servicios de backend se hará a traves de tuneles con ngrok exponiendo el puerto 8000 a la nube
 > ```
 > ngrok http http://localhost:8000
 > ```
 
+# 3. Configuracion paquetes y ambientes mobile
 
-## Docker
 
-> ```
-> docker-compose -f dockercompose.yml up --build
-> ```
+# 4. Autores
 
-## Lambdas AWS
+- @victor1404 Victor Llinares
+- @kakaroto2202 Cesar Montero
+- @jcrisdro Joseph Diaz
 
-https://www.youtube.com/watch?v=FUsJmLO2G4g
-https://medium.com/@kevinzeladacl/deploy-a-fastapi-app-with-nginx-and-gunicorn-b66ac14cdf5a
-
-> ```
-> pip3 install -t lib -r requirements.txt
-> zip aws_lambda_artifact.zip -r lib/*
-> zip -r aws_lambda_artifact.zip project
-> zip -r aws_lambda_artifact.zip resources
-> ```

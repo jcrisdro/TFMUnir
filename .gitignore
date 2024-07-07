@@ -1,9 +1,12 @@
-# project
-uploads/*
-!uploads/.uploads.txt
-.python-version
-uploads/how2sign/videos/*.mp4
-constants.py
+# project backend
+backend/uploads/*
+!backend/uploads/.uploads.txt
+backend/.python-version
+backend/uploads/how2sign/videos/*.mp4
+backend/constants.py
+backend/resources/how2sign/how2sign_realigned.h5
+backend/resources/models/model_stopwords.model/*
+backend/resources/models/model_w2v_brown.model/*
 
 # general
 *.DS_Store
