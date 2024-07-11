@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/videoIdTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Video Result"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="420dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/sentenceInputTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Sentence Input"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/sentenceOutputTextView"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:text="Sentence Output"
+            android:textSize="18sp"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/embeddingsDistancesTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Embeddings Distances"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/TextOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Output will be shown here"
+            android:visibility="gone" />
+
+
+        <ImageButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:src="@drawable/microphone2">
+
+        </ImageButton>
+
+
+
+    </LinearLayout>
+</ScrollView>
