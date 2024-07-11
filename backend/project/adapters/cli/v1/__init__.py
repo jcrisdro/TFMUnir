@@ -9,6 +9,7 @@ from colorama import init, Fore, Back, Style
 from project.adapters.cli.v1.run_models import RunModelsCliAdapter
 from project.services.inputs import InputService
 from project.services.outputs import OutputService
+from project.services.testhamodel import TestHAModelService
 from constants import ROOT_PROJECT
 
 
@@ -25,6 +26,7 @@ def setup_args():
     parser_args.add_argument('-S', '--sentences', type=str, default=None)
     parser_args.add_argument('-L', '--languages', type=str, default='es')
     parser_args.add_argument('-Ta', '--test_audio', type=str)
+    parser_args.add_argument('-Ta2', '--test_audio_v2', type=str)
     return parser_args
 
 
@@ -54,9 +56,9 @@ def handle_args(args: dict = None):
                     break
                 _ = input_service.capture_video(frame=frame)
     elif args.model == 'hamodel':
-        input_service = InputService()
-        output_service = OutputService()
         if args.audio:
+            input_service = InputService()
+            output_service = OutputService()
             print(Back.YELLOW + Fore.WHITE + "press Q for exit" + Style.RESET_ALL)
             segment = []
             my_listener = kb.Listener(pull, push)
@@ -68,6 +70,8 @@ def handle_args(args: dict = None):
             print(Back.RED + Fore.WHITE + "destroyed all windows")
             cv2.destroyAllWindows()
         elif args.test_audio:
+            input_service = InputService()
+            output_service = OutputService()
             test_video = [{
                 'VIDEO_NAME': '-0N0jbyBW6g-5-rgb_front',
                 'SENTENCE_NAME': '-0N0jbyBW6g_0-5-rgb_front',
@@ -88,6 +92,10 @@ def handle_args(args: dict = None):
                 'INPUT_TEXT': ' Hello, that is good. Hello, that is good.'
             }]
             output_service.show_video(list_videos=test_video, folder_name='test')
+        elif args.test_audio_v2:
+            print(f">>{args}")
+            test_hamodel_service = TestHAModelService()
+            test_hamodel_service.predict()
         else:
             if args.path:
                 run_models_cli_adapter = RunModelsCliAdapter()

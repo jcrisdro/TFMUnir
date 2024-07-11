@@ -18,7 +18,7 @@ class TestHAModelService:
             for sentence in TESTING_SENTENCES:
                 self.hamodel_service.__set_metrics__(metrics={
                     'model': model[3], 'corpus': model[1], 'distance': model[2], 'transformer': model[3],
-                    'sentence': sentence['phrase']})
+                    'sentence': sentence['phrase'], 'alternative': True if sentence['alternative'] else False})
 
                 self.hamodel_service.__set_time__(start_time=time.time())
                 self.hamodel_service.predict(sentence=sentence['phrase'], distance=model[2])
@@ -27,7 +27,7 @@ class TestHAModelService:
                 if sentence.get('alternative'):
                     self.hamodel_service.__set_metrics__(metrics={
                         'model': model[3], 'corpus': model[1], 'distance': model[2], 'transformer': model[3],
-                        'sentence': sentence['phrase']})
+                        'sentence': sentence['phrase'], 'alternative': True if sentence['alternative'] else False})
                     self.hamodel_service.__set_time__(start_time=time.time())
                     self.hamodel_service.predict(sentence=sentence['alternative'], distance=model[2])
                     metrics.append(self.hamodel_service.__get_metrics__())

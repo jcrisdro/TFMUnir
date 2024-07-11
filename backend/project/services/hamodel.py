@@ -45,7 +45,7 @@ class HAModelService:
 
     def __get_time__(self, method: str = None):
         """ get time """
-        self.__metrics[f'{method}_time'] = time.time() - self.__start_time
+        self.__metrics[f'{method}_time'] = "{:.6f}".format(time.time() - self.__start_time)
 
     def __get_metrics__(self):
         """ get metrics """
@@ -177,7 +177,7 @@ class HAModelService:
         self.__metrics['sentence_method'] = hashlib.md5(sentence.encode('utf')).hexdigest()
         self.__get_time__(method='predict')
         self.__metrics['distance_method'] = distance
-        self.__metrics['distance_value'] = row['EMBEDDINGS_DISTANCES']
+        self.__metrics['distance_value'] = "{:.6f}".format(row['EMBEDDINGS_DISTANCES'])
 
         return {
             'VIDEO_ID': row['VIDEO_ID'],
