@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "tfmunir"
+version = "0.1.0"
+description = ""
+authors = ["Joseph Diaz <jcrisdro@hotmail.es>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+openai-whisper = {git = "https://github.com/openai/whisper.git"}
+fastapi = "^0.111.1"
+tables = "^3.9.2"
+boto3 = "^1.34.150"
+mangum = "^0.17.0"
+ffmpeg = "^1.4"
+moviepy = "^1.0.3"
+sounddevice = "^0.4.7"
+speechrecognition = "^3.10.4"
+pyaudio = "^0.2.14"
+pynput = "^1.7.7"
+opencv-python = "^4.10.0.84"
+nltk = "^3.8.1"
+pandas = "^2.2.2"
+scikit-learn = "^1.5.1"
+gensim = "4.3.2"
+sentence-transformers = "^3.0.1"
+yolov5 = "^7.0.13"
+psutil = "^6.0.0"
+py-cpuinfo = "^9.0.0"
+flake8 = "^7.1.0"
+argparse = "^1.4.0"
+scipy = "1.12"
+openpyxl = "^3.1.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -98,37 +98,11 @@ Reinicie la configuracion de perfil de bash
 ## 2.2. Configurar virtual envs
 Instale la version de python con `pyenv`
 > ```
-> pyenv install --list
-> pyenv install 3.11.0
-> ```
-
-Ubique el directorio de trabajo y corra los siguientes comandos
-> ```
-> pyenv local 3.11.0
-> pyenv virtualenv
-> pyenv virtualenv 3.11.0 .ia_venv
-> ```
-
-Donde `.ia_venv` es el nombre del folder de nuestro entorno virtual local
-> ```
-> pyenv local .ia_venv 
-> python --version
-> which python
-> ```
-
-## 2.3. Activar virtual envs
-Para activar el ambiente virtual hagalo ingresando al proyecto y vera en el shell `(.ia_venv)` o si no ejecute la ruta completa
-> ```
-> cd project
-> source /Users/joseph.diaz/.pyenv/versions/3.11.0/envs/.ia_venv/bin/activate
-> ```
-
-## 2.4. Instalacion paquetes proyecto
-Para instalar los paquetes necesarios ejecute
-
-> ```
-> pip3 install --upgrade pip
-> pip3 install -r requirements.txt
+> pip3 install poetry
+> poetry init
+> poetry shell
+> poetry add git+https://github.com/openai/whisper.git\n
+> xargs poetry add < requirements.txt
 > ```
 y puede validar que todos los paquetes quedaran instalados dando `pip3 freeze` o `pip3 list`
 
@@ -200,7 +174,7 @@ Ejemplos de frases y respuestas
 Testear modelo hamodel con datos prueba
 > ```
 > cd backend
-> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --test_audio True
+> PYTHONPATH=. python3 project/adapters/cli/v1/__init__.py --model hamodel --test_audio_v2 True
 > ```
 
 

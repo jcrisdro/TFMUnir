@@ -34,10 +34,11 @@ class HAModelService:
         self.__start_time = time.time()
         self.__metrics = {}
         self.resource_video = resource_video
-        print(f"HAModelService started [{type_model} {corpus} {transformer} {resource_video}]")
+        # print(f"HAModelService started [{type_model} {corpus} {transformer} {resource_video}]")
 
     def __del__(self) -> None:
-        print("HAModelService stopped")
+        # print("HAModelService stopped")
+        pass
 
     def __set_time__(self, start_time: float = 0.0):
         """ set time """
@@ -45,7 +46,7 @@ class HAModelService:
 
     def __get_time__(self, method: str = None):
         """ get time """
-        self.__metrics[f'{method}_time'] = "{:.6f}".format(time.time() - self.__start_time)
+        self.__metrics[f'_{method}'] = "{:.6f}".format(time.time() - self.__start_time)
 
     def __get_metrics__(self):
         """ get metrics """
@@ -162,6 +163,7 @@ class HAModelService:
                     distance=distance, rows=self.df_embeddings['EMBEDDINGS_SENTENCE'].tolist(), model=model_embeddings)
             except Exception as e:
                 print(f"Exception: {e}")
+
             row = self.df_embeddings.loc[self.df_embeddings['EMBEDDINGS_DISTANCES'].idxmin()]
         else:
             # TODO: mejorar la validacion de busquedas difusas
@@ -177,6 +179,7 @@ class HAModelService:
         self.__metrics['sentence_method'] = hashlib.md5(sentence.encode('utf')).hexdigest()
         self.__get_time__(method='predict')
         self.__metrics['distance_method'] = distance
+        self.__metrics['sentence_found'] = row['SENTENCE']
         self.__metrics['distance_value'] = "{:.6f}".format(row['EMBEDDINGS_DISTANCES'])
 
         return {

@@ -1,10 +1,12 @@
 import argparse
+import platform
+import psutil
 import os
 import cv2
 
 from datetime import datetime
 from pynput import keyboard as kb
-from colorama import init, Fore, Back, Style
+# from colorama import init, Fore, Back, Style
 
 from project.adapters.cli.v1.run_models import RunModelsCliAdapter
 from project.services.inputs import InputService
@@ -18,7 +20,7 @@ def setup_args():
     Setup the arguments for the CLI
     """
     parser_args = argparse.ArgumentParser(description='Files CLI')
-    parser_args.add_argument('-m', '--model', type=str, choices=['vsmodel', 'hamodel'], required=True)
+    parser_args.add_argument('-m', '--model', type=str, choices=['vsmodel', 'hamodel', 'cpuinfo'], required=True)
     parser_args.add_argument('-t', '--task', type=bool, choices=['train'], required=False)
     parser_args.add_argument('-c', '--cam', type=bool, default=False)
     parser_args.add_argument('-a', '--audio', type=bool, default=False)
@@ -29,6 +31,33 @@ def setup_args():
     parser_args.add_argument('-Ta2', '--test_audio_v2', type=str)
     return parser_args
 
+def cpuinfo():
+    """ cpu info """
+
+    info = {}
+    info["System"] = platform.system()
+    info["Release"] = platform.release()
+    info["Version"] = platform.version()
+    info["Machine"] = platform.machine()
+    info["Processor"] = platform.processor()
+    info["CPU Cores"] = psutil.cpu_count(logical=False)
+    info["Total CPU Threads"] = psutil.cpu_count(logical=True)
+    info["Total Memory"] = f"{psutil.virtual_memory().total / (1024 ** 3):.2f} GB"
+    info["Available Memory"] = f"{psutil.virtual_memory().available / (1024 ** 3):.2f} GB"
+    info["Used Memory"] = f"{psutil.virtual_memory().used / (1024 ** 3):.2f} GB"
+    info["Free Memory"] = f"{psutil.virtual_memory().free / (1024 ** 3):.2f} GB"
+    info["Memory Percent"] = f"{psutil.virtual_memory().percent}%"
+    info["Total Swap Memory"] = f"{psutil.swap_memory().total / (1024 ** 3):.2f} GB"
+    info["Used Swap Memory"] = f"{psutil.swap_memory().used / (1024 ** 3):.2f} GB"
+    info["Free Swap Memory"] = f"{psutil.swap_memory().free / (1024 ** 3):.2f} GB"
+    info["Swap Memory Percent"] = f"{psutil.swap_memory().percent}%"
+    info["Total Disk"] = f"{psutil.disk_usage('/').total / (1024 ** 3):.2f} GB"
+    info["Used Disk"] = f"{psutil.disk_usage('/').used / (1024 ** 3):.2f} GB"
+    info["Free Disk"] = f"{psutil.disk_usage('/').free / (1024 ** 3):.2f} GB"
+    info["Disk Percent"] = f"{psutil.disk_usage('/').percent}%"
+    info["Total Network"] = f"{psutil.net_io_counters().bytes_sent / (1024 ** 3):.2f} GB"
+    info["Total Network"] = f"{psutil.net_io_counters().bytes_recv / (1024 ** 3):.2f} GB"
+    return info
 
 def handle_args(args: dict = None):
     def pull(key):
@@ -40,7 +69,7 @@ def handle_args(args: dict = None):
             return False
 
     folder_name = datetime.strftime(datetime.now(), "%Y%m%d%H%M%S")
-    print(Style.BRIGHT + Fore.YELLOW + f"making directory {ROOT_PROJECT}/uploads/{folder_name}")
+    # print(Style.BRIGHT + Fore.YELLOW + f"making directory {ROOT_PROJECT}/uploads/{folder_name}")
     os.mkdir(f"{ROOT_PROJECT}/uploads/{folder_name}")
     cycle = 0
     if args.model == 'vsmodel':
@@ -95,7 +124,9 @@ def handle_args(args: dict = None):
         elif args.test_audio_v2:
             print(f">>{args}")
             test_hamodel_service = TestHAModelService()
-            test_hamodel_service.predict()
+            test_hamodel_service.predict2()
+            for key, value in cpuinfo().items():
+                print(f"{key}: {value}")
         else:
             if args.path:
                 run_models_cli_adapter = RunModelsCliAdapter()
@@ -105,13 +136,15 @@ def handle_args(args: dict = None):
                 run_models_cli_adapter.hamodel(sentences=args.sentences)
             else:
                 print("Please select a valida option")
+    elif args.model == 'cpuinfo':
+        info = cpuinfo()
+        for key, value in info.items():
+            print(f"{key}: {value}")
     else:
         print("Please select a valid model")
 
 
 if __name__ == "__main__":
     """ main function """
-    init()
-    print(Style.BRIGHT + Fore.YELLOW + "Preparing project")
     parser = setup_args()
     handle_args(parser.parse_args())

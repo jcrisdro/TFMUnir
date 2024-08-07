@@ -1,3 +1,9 @@
+import pandas as pd
+
+from os.path import exists
+
+from constants import ROOT_PROJECT
+
 TESTING_HAMODEL = [
     ["semantic", "brown", "cosine", "all-MiniLM-L6-v2"],
     ["semantic", "brown", "cosine", "paraphrase-MiniLM-L6-v2"],
@@ -93,5 +99,23 @@ TESTING_SENTENCES = [
     {"phrase": "Let's pick it up.", "alternative": "Let's increase the speed."},
     {"phrase": "What's the purpose of the jeans?", "alternative": None},
     {"phrase": "This diamond is D in color.", "alternative": None},
-    {"phrase": "Let's watch Luis as he takes a shot.", "alternative": None}
+    {"phrase": "Let's watch Luis as he takes a shot.", "alternative": None},
+    {"phrase": "Ji!", "error": True},
+    {"phrase": "How're ya?", "error": True},
+    {"phrase": "Goof", "error": True},
+    {"phrase": "Do ya have a lot of snow", "error": True},
+    {"phrase": "It will shutoff the PC.", "error": True},
+    {"phrase": "ho!", "error": True},
+    {"phrase": "Keepit simple stupid.", "error": True},
 ]
+
+
+def read_excel():
+    file_test = f"{ROOT_PROJECT}/tests/metrics/BookTest.xlsx"
+    if exists(file_test):
+        response = {}
+        for sheet in ["Error", "Sinonimos", "Numeros"]:
+            df = pd.read_excel(file_test, sheet_name=sheet)
+            response[sheet] = df
+        return response
+    return None
