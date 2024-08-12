@@ -84,8 +84,12 @@ class HAModelService:
                         output = base64.b64encode(video.read()).decode('utf-8')
             elif self.resource_video == 'local':
                 file_directory = f"{ROOT_PROJECT}/uploads/how2sign/videos/{video_name}.mp4"
-                with open(file_directory, 'rb') as video:
-                    output = base64.b64encode(video.read()).decode('utf-8')
+                try:
+                    with open(file_directory, 'rb') as video:
+                        output = base64.b64encode(video.read()).decode('utf-8')
+                except Exception as e:
+                    print(f"File {file_directory} can't read {e}")
+                    output = None
             else:
                 output = None
             return output

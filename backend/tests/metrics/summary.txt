@@ -1,7 +1,7 @@
 *******************************************************************************************
-metrics_01.csv
+metrics.csv
 
-    1091.0568089485168 sg
+    1812.6697432994843
     System: Darwin
     Release: 23.5.0
     Version: Darwin Kernel Version 23.5.0: Wed May  1 20:12:58 PDT 2024; root:xnu-10063.121.3~5/RELEASE_ARM64_T6000
@@ -10,18 +10,21 @@ metrics_01.csv
     CPU Cores: 8
     Total CPU Threads: 8
     Total Memory: 16.00 GB
-    Available Memory: 2.88 GB
-    Used Memory: 5.65 GB
-    Free Memory: 0.02 GB
-    Memory Percent: 82.0%
-    Total Swap Memory: 1.00 GB
-    Used Swap Memory: 0.28 GB
-    Free Swap Memory: 0.72 GB
-    Swap Memory Percent: 28.3%
+    Available Memory: 2.50 GB
+    Used Memory: 5.68 GB
+    Free Memory: 0.06 GB
+    Memory Percent: 84.4%
+    Total Swap Memory: 7.00 GB
+    Used Swap Memory: 5.75 GB
+    Free Swap Memory: 1.25 GB
+    Swap Memory Percent: 82.2%
     Total Disk: 460.43 GB
     Used Disk: 9.56 GB
-    Free Disk: 171.47 GB
-    Disk Percent: 5.3%
-    Total Network: 3.03 GB
+    Free Disk: 163.69 GB
+    Disk Percent: 5.5%
+    Total Network: 4.31 GB
+    ExplodeService stopped
 
 *******************************************************************************************
+*******************************************************************************************
+
