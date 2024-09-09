@@ -88,7 +88,7 @@ class HAModelService:
                     with open(file_directory, 'rb') as video:
                         output = base64.b64encode(video.read()).decode('utf-8')
                 except Exception as e:
-                    print(f"File {file_directory} can't read {e}")
+                    # print(f"File {file_directory} can't read {e}")
                     output = None
             else:
                 output = None

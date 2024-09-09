@@ -217,7 +217,8 @@ El despliegue de los servicios de backend se hará a traves de tuneles con ngrok
 > ```
 
 # 3. Configuracion paquetes y ambientes mobile
-
+> docker build -f devops/service.Dockerfile -t tfmunir .
+> docker run --memory=2g --cpus=1 tfmunir  
 
 # 4. Autores
 

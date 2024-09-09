@@ -1,18 +1,18 @@
 import argparse
+from genericpath import isfile
 import platform
 import psutil
 import os
 import cv2
 
 from datetime import datetime
-from pynput import keyboard as kb
-# from colorama import init, Fore, Back, Style
+# from pynput import keyboard as kb
 
+from constants import ROOT_PROJECT
 from project.adapters.cli.v1.run_models import RunModelsCliAdapter
 from project.services.inputs import InputService
 from project.services.outputs import OutputService
 from project.services.testhamodel import TestHAModelService
-from constants import ROOT_PROJECT
 
 
 def setup_args():
@@ -60,6 +60,7 @@ def cpuinfo():
     return info
 
 def handle_args(args: dict = None):
+    """ handle the arguments """
     def pull(key):
         pass
 
@@ -69,7 +70,6 @@ def handle_args(args: dict = None):
             return False
 
     folder_name = datetime.strftime(datetime.now(), "%Y%m%d%H%M%S")
-    # print(Style.BRIGHT + Fore.YELLOW + f"making directory {ROOT_PROJECT}/uploads/{folder_name}")
     os.mkdir(f"{ROOT_PROJECT}/uploads/{folder_name}")
     cycle = 0
     if args.model == 'vsmodel':
@@ -146,5 +146,10 @@ def handle_args(args: dict = None):
 
 if __name__ == "__main__":
     """ main function """
-    parser = setup_args()
-    handle_args(parser.parse_args())
+    # parser = setup_args()
+    # handle_args(parser.parse_args())
+
+    test_hamodel_service = TestHAModelService()
+    test_hamodel_service.predict2()
+    for key, value in cpuinfo().items():
+        print(f"{key}: {value}")

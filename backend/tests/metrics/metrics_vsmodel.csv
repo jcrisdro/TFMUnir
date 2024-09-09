@@ -1,0 +1,47 @@
+Imagen;Objeto Real;Objeto Encontrado;Coincidencia;Distancia;Distancia Aprox;Error absoluto;Error porcentual
+1;car;car;TRUE;22;7;-15;-214,29
+1;person;;FALSE;0;40;40;100
+2;car;car;TRUE;18;4;-14;-350
+2;car;car;TRUE;23;6;-17;-283,33
+2;car;car;TRUE;68;8;-60;-750
+2;three;;FALSE;0;3;3;100
+3;motorcycle;motorcycle;TRUE;16;2;-14;-700
+3;motorcycle;;FALSE;0;3;3;100
+3;car;car;TRUE;16;7;-9;-128,57
+3;car;car;TRUE;29;9;-20;-222,22
+3;person;person;TRUE;63;7;-56;-800
+3;three;;FALSE;0;4;4;100
+4;car;car;TRUE;41;10;-31;-310
+4;motorcycle;motorcycle;TRUE;73;10;-63;-630
+4;three;;FALSE;0;0;0;#DIV/0!
+4;motorcycle;motorcycle;TRUE;46;10;-36;-360
+4;person;person;TRUE;71;20;-51;-255
+5;car;car;TRUE;18;5;-13;-260
+6;person;person;TRUE;8;3;-5;-166,67
+6;animal;;FALSE;0;0;0;#DIV/0!
+7;car;car;TRUE;27;5;-22;-440
+7;car;car;TRUE;37;7;-30;-428,57
+7;car;car;TRUE;45;9;-36;-400
+7;person;person;TRUE;119;10;-109;-1090
+8;keyboard;;FALSE;0;0,3;0,3;100
+9;person;;FALSE;19;7;-12;-171,43
+9;person;;FALSE;21;8;-13;-162,5
+9;person;;FALSE;0;12;12;100
+10;motorcycle;person;FALSE;9;3;-6;-200
+10;car;car;TRUE;38;4;-34;-850
+10;traffic light;traffic light;TRUE;71;5;-66;-1320
+10;traffic light;traffic light;TRUE;128;9;-119;-1322,22
+11;person;;FALSE;0;3;3;100
+11;horse;horse;TRUE;3;3;0;0
+12;person;person;TRUE;27;4;-23;-575
+12;person;person;TRUE;31;4;-27;-675
+12;person;person;TRUE;38;4;-34;-850
+13;bus;;FALSE;0;12;12;100
+13;person;person;TRUE;117;13;-104;-800
+14;table;;FALSE;0;6;6;100
+14;chair;chair;TRUE;24;6;-18;-300
+14;chair;chair;TRUE;28;6;-22;-366,67
+14;chair;;FALSE;0;6;6;100
+14;person;person;TRUE;101;12;-89;-741,67
+15;bus;;FALSE;0;6;6;100
+15;person;person;TRUE;19;10;-9;-90

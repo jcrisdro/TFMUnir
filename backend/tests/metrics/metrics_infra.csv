@@ -1,0 +1,7 @@
+Time;System;Release;Version;Machine;Processor;CPU Cores;Total CPU Threads;Total Memory;Available Memory;Used Memory;Free Memory;Memory Percent;Total Swap Memory;Used Swap Memory;Free Swap Memory;Swap Memory Percent;Total Disk;Used Disk;Free Disk;Disk Percent;Total Network;Docker CPUs;Docker Mem
+1720;Darwin;23.6.0;"Darwin Kernel Version 23.6.0: Mon Jul 29 21:14:30 PDT 2024; root:xnu-10063.141.2~1/RELEASE_ARM64_T6000";arm64;arm;8;8;16.00 GB;2.74 GB;5.77 GB;0.04 GB;82.8%;5.00 GB;4.05 GB;0.95 GB;81.1%;460.43 GB;9.56 GB;167.14 GB;5.4%;6.30 GB;;
+40812;Linux;6.6.26-linuxkit; #1 SMP Sat Apr 27 04 13 19 UTC 2024; x86_64; x86_64;8;8;7.66 GB;6.28 GB;1.18 GB;0.38 GB;17.9%;4.00 GB;0.00 GB;4.00 GB;0.0%;54.82 GB;25.69 GB; 26.32 GB;49.4%;0.00 GB;1;2.00Gb
+5174;Linux;6.6.26-linuxkit; #1 SMP Sat Apr 27 04 13 19 UTC 2024; x86_64; x86_64;8;8;7.66 GB;6.38 GB;1.11 GB;5.47 GB;16.6%;4.00 GB;0.00 GB; 4.00 GB;0.0%;54.82 GB;26.08 GB; 25.92 GB;50.2%;0.00 GB;3;4.00Gb
+9317;Linux;6.6.26-linuxkit; #1 SMP Sat Apr 27 04 13 19 UTC 2024; x86_64; x86_64;8;8;7.66 GB;6.37 GB;1.12 GB;5.46 GB;16.8%;4.00 GB;0.00 GB; 4.00 GB; 0.0%; 54.82 GB; 26.09 GB; 25.91 GB; 50.2%; 0.00 GB;2;8.00Gb
+4275;Linux;6.6.26-linuxkit;#1 SMP Sat Apr 27 04:13:19 UTC 2024;x86_64;x86_64;8;8;7.66 GB;6.69 GB;0.81 GB;6.38 GB;12.7%;4.00 GB;0.29 GB;3.71 GB;7.2%;54.82 GB;26.08 GB;25.92 GB;50.2%;0.00 GB;1;4.00Gb
+9621;Linux;6.6.26-linuxkit;#1 SMP Sat Apr 27 04:13:19 UTC 2024;x86_64;x86_64;8;8;7.66 GB;6.44 GB;1.05 GB;5.53 GB;15.9%;4.00 GB;0.00 GB;4.00 GB;0.0%;54.82 GB;26.10 GB;25.90 GB;50.2%;0.00 GB;2;8.00Gb
